@@ -95,20 +95,15 @@ def read_output():
             if val_b is None:
                 val_b = 0
 
-            # Python-side calculation for validation
-            try:
-                val_a = float(val_a)
-                val_b = float(val_b)
-                total = val_a + val_b
-            except ValueError:
-                total = "Error: Non-numeric data"
+            # Read Column C (Total) directly from the sheet
+            val_c = ws.cell(row=row, column=3).value
 
             all_records.append(
                 {
                     "row": row,
                     "column_a": val_a,
                     "column_b": val_b,
-                    "column_c_total": total,
+                    "column_c_total": val_c,
                 }
             )
 
@@ -116,7 +111,7 @@ def read_output():
             "file": OUTPUT_FILE,
             "total_records": len(all_records),
             "data": all_records,
-            "note": "Totals calculated by Python for API response; Excel file contains formulas.",
+            "note": "Values read directly from Excel file.",
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
